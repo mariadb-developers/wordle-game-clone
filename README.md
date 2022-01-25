@@ -74,7 +74,9 @@ npm install
 npm run dev
 ```
 
-Go to http://localhost:8080.
+Go to http://localhost:8080:
+
+![Screenshot](https://repository-images.githubusercontent.com/451800068/0e2f27cc-10d8-404c-b090-950ff8396561)
 
 ## Add topics
 

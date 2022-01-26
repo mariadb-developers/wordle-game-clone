@@ -10,6 +10,7 @@
     let win = false;
     let resultsShare = '';
     let checkingWord = false;
+    let wrongWord = false;
 
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -31,6 +32,7 @@
 
     const checkWord = () => {
         checkingWord = true;
+        wrongWord = false;
         fetch(`http://localhost:9090/api/v1/${topic.id}/${length}/${wordToCheck}/check`)
             .then(response => response.text())
             .then(data => addResult(data))
@@ -54,6 +56,8 @@
             wordToCheck = '';
             fillWithSpaces();
             window.scrollTo(0, document.body.scrollHeight + 900);
+        } else {
+            wrongWord = true;
         }
     };
 
@@ -99,7 +103,7 @@
             <Row word="{result.word}" colors="{result.colors}"/>
         {/each}
         {#if !win}
-            <Row word="{wordToCheck}"/>
+            <Row word="{wordToCheck}" shake="{wrongWord}"/>
             {#if checkingWord}
                 <div>
                     <img alt="checking..." class="checking" src="./images/checking.gif">

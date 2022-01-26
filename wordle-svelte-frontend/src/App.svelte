@@ -52,9 +52,10 @@
                         .replaceAll('2', '🟩') + "\n";
                 }
                 win = true;
+            } else {
+                wordToCheck = '';
+                fillWithSpaces();
             }
-            wordToCheck = '';
-            fillWithSpaces();
             window.scrollTo(0, document.body.scrollHeight + 900);
         } else {
             wrongWord = true;
@@ -110,6 +111,11 @@
                 </div>
             {/if}
         {:else}
+            <div class="meaning">
+                Lookup <a href="https://en.wikipedia.org/w/index.php?search={wordToCheck}">
+                <span class="word">{wordToCheck}</span></a>
+                in Wikipedia.
+            </div>
             <div class="twitter">
                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 <a href="https://twitter.com/intent/tweet?screen_name=MariaDB"
@@ -148,11 +154,22 @@
         width: 100px;
     }
 
+    .meaning {
+        font-size: small;
+        margin-top: 1.5em;
+    }
+
+    .word {
+        font-style: italic;
+        text-transform: uppercase;
+    }
+
     .twitter {
         margin-top: 1.5em;
     }
 
     .footer {
+        margin-top: 1.5em;
         font-size: small;
     }
 </style>

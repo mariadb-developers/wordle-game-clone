@@ -100,6 +100,11 @@
         {/each}
         {#if !win}
             <Row word="{wordToCheck}"/>
+            {#if checkingWord}
+                <div>
+                    <img alt="checking..." class="checking" src="./images/checking.gif">
+                </div>
+            {/if}
         {:else}
             <div class="twitter">
                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -133,6 +138,10 @@
         display: flex;
         flex-direction: column;
         padding-bottom: 3em;
+    }
+
+    .checking {
+        width: 100px;
     }
 
     .twitter {

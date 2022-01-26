@@ -25,7 +25,7 @@ public class WordleController {
     public Flux<String> checkWord(@PathVariable long topicId,
                                   @PathVariable int length,
                                   @PathVariable String testWord) {
-        wordleRepository.pickTodaysWord(topicId, length).onErrorReturn(0).subscribe();
+        wordleRepository.pickTodaysWord(topicId, length).onErrorReturn(-1).subscribe();
         return wordleRepository.checkWord(testWord, topicId, length);
     }
 

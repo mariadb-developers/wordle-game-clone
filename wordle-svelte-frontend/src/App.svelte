@@ -9,13 +9,12 @@
     let results = [];
     let win = false;
     let resultsShare = '';
+    let checkingWord = false;
 
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("length")) {
             length = parseInt(urlParams.get('length'));
-        } else {
-            length = 5;
         }
 
         let topicId = 1;
@@ -31,9 +30,11 @@
     });
 
     const checkWord = () => {
+        checkingWord = true;
         fetch(`http://localhost:9090/api/v1/${topic.id}/${length}/${wordToCheck}/check`)
             .then(response => response.text())
-            .then(data => addResult(data));
+            .then(data => addResult(data))
+            .then(() => checkingWord = false);
     };
 
     const addResult = resultString => {
@@ -63,7 +64,7 @@
     }
 
     function handleKeydown(event) {
-        if (event.altKey || event.ctrlKey || event.metaKey
+        if (checkingWord || event.altKey || event.ctrlKey || event.metaKey
             || event.key === "Meta" || event.key === "Control"
             || event.key === "alt") {
             return;

@@ -2,7 +2,7 @@
 
 A [Wordle](https://en.wikipedia.org/wiki/Wordle) clone implemented with [Spring Boot](https://spring.io/projects/spring-boot), [R2DBC](https://r2dbc.io/), [MariaDB](https://mariadb.com/), and [Svelte](https://svelte.dev/).
 
-> ⚠️ This implementation is intended to show MariaDB's SQL features rather than to demostrate the most efficient way to implement the game. We purposely implemented game logic as SQL statements to demonstrate some of these features.
+> ⚠️ This implementation is intended to show MariaDB's SQL features rather than to demostrate the most efficient way to implement the game. We purposely implemented the game logic as SQL statements to demonstrate some of these features.
 
 ## Requirements
 

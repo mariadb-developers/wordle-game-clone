@@ -13,7 +13,8 @@ public interface WordleRepository extends ReactiveCrudRepository<Topic, Long> {
     @Query("""
             UPDATE word
             SET published = CURRENT_DATE()
-            WHERE topic_id = :topicId
+            WHERE published IS NULL
+              AND topic_id = :topicId
               AND length = :length
             ORDER BY RAND()
             LIMIT 1;

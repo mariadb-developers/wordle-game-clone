@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin
+@CrossOrigin(methods = {RequestMethod.GET})
 public class WordleController {
 
     private final WordleRepository wordleRepository;

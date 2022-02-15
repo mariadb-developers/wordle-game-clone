@@ -2,6 +2,7 @@
     import {onMount} from "svelte";
     import Row from './Row.svelte';
 
+    let backend = "";
     let topics = [];
     let topic = {};
     let length = 5;
@@ -23,17 +24,22 @@
             topicId = parseInt(urlParams.get('topic'));
         }
 
-        fetch("http://localhost:9090/api/v1/topics")
-            .then(response => response.json())
-            .then(data => topics = data)
-            .then(() => topic = topics.find(t => t.id === topicId))
-            .then(() => fillWithSpaces());
+        fetch("/backend.url")
+            .then(response => response.text())
+            .then(url => backend = url)
+            .then(() =>
+                fetch(`${backend}/topics`)
+                    .then(response => response.json())
+                    .then(data => topics = data)
+                    .then(() => topic = topics.find(t => t.id === topicId))
+                    .then(() => fillWithSpaces())
+            );
     });
 
     const checkWord = () => {
         checkingWord = true;
         wrongWord = false;
-        fetch(`http://localhost:9090/api/v1/${topic.id}/${length}/${wordToCheck}/check`)
+        fetch(`${backend}/${topic.id}/${length}/${wordToCheck}/check`)
             .then(response => response.text())
             .then(data => addResult(data))
             .then(() => checkingWord = false);

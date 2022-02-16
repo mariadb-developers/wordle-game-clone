@@ -7,7 +7,4 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /src/target/wordle-java-spring-backend.jar .
 EXPOSE 9090
-CMD java -jar wordle-java-spring-backend.jar\
-    --spring.r2dbc.url=r2dbc:$R2DBC_URL\
-    --spring.r2dbc.user=$R2DBC_USER\
-    --spring.r2dbc.password=$R2DBC_PASSWORD
+CMD java -jar wordle-java-spring-backend.jar $APP_PARAMS

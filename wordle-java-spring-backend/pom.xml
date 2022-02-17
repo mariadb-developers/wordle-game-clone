@@ -93,7 +93,7 @@
                                     <goal>copy</goal>
                                 </goals>
                                 <configuration>
-                                    <sourceFile>$HOME/skysql_chain.pem</sourceFile>
+                                    <sourceFile>/${env.HOME}/skysql_chain.pem</sourceFile>
                                     <destinationFile>target/classes/skysql_chain.pem</destinationFile>
                                 </configuration>
                             </execution>

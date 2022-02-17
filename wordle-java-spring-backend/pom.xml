@@ -73,7 +73,12 @@
 
     <profiles>
         <profile>
-            <id>with-skysql-ca</id>
+            <id>heroku</id>
+            <activation>
+                <property>
+                    <name>env.DYNO</name>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>

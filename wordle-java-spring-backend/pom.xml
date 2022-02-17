@@ -73,7 +73,7 @@
 
     <profiles>
         <profile>
-            <id>heroku</id>
+            <id>with-skysql-ca</id>
             <build>
                 <plugins>
                     <plugin>
@@ -89,7 +89,7 @@
                                 </goals>
                                 <configuration>
                                     <sourceFile>${user.home}/skysql_chain.pem</sourceFile>
-                                    <destinationFile>target/classes/com/example/mariadb/wordle/skysql_chain.pem</destinationFile>
+                                    <destinationFile>target/classes/skysql_chain.pem</destinationFile>
                                 </configuration>
                             </execution>
                         </executions>

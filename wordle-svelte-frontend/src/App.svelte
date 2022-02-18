@@ -30,10 +30,9 @@
             .then(response => response.text())
             .then(url => backend = url)
             .then(() =>
-                fetch(`${backend}/topics`)
+                topics = fetch(`${backend}/topics`)
                     .then(response => response.json())
-                    .then(data => topics = data)
-                    .then(() => topic = topics.find(t => t.id === topicId))
+                    .then(topics => topic = topics.find(t => t.id === topicId))
                     .then(() => fillWithSpaces())
                     .then(() => screenKeyboardSetup())
             );
@@ -64,7 +63,7 @@
             } else {
                 wordToCheck = '';
                 fillWithSpaces();
-                setTimeout(() => window.scrollTo(0,document.body.scrollHeight), 355);
+                setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 355);
             }
         } else {
             wrongWord = true;
@@ -118,13 +117,17 @@
 <svelte:window on:keydown={handleKeydown}/>
 
 <main>
-    <h1>
-        {#if win}
-            Congrats!
-        {:else}
-            {topic.name}
-        {/if}
-    </h1>
+    {#await topics}
+        <p>Connecting to SkySQL...</p>
+    {:then a}
+        <h1>
+            {#if win}
+                Congrats!
+            {:else}
+                {topic.name}
+            {/if}
+        </h1>
+    {/await}
     <div class="board">
         {#each results as result (result)}
             <Row word="{result.word}" colors="{result.colors}"/>

@@ -5,7 +5,6 @@
     import "simple-keyboard/build/css/index.css";
 
     let backend = "";
-    let topics = [];
     let topic = {};
     let length = 5;
     let wordToCheck = '';
@@ -30,7 +29,7 @@
             .then(response => response.text())
             .then(url => backend = url)
             .then(() =>
-                topics = fetch(`${backend}/topics`)
+                fetch(`${backend}/topics`)
                     .then(response => response.json())
                     .then(topics => topic = topics.find(t => t.id === topicId))
                     .then(() => fillWithSpaces())
@@ -116,56 +115,6 @@
 
 <svelte:window on:keydown={handleKeydown}/>
 
-<main>
-    {#await topics}
-        <p>Connecting to SkySQL...</p>
-    {:then a}
-        <h1>
-            {#if win}
-                Congrats!
-            {:else}
-                {topic.name}
-            {/if}
-        </h1>
-    {/await}
-    <div class="board">
-        {#each results as result (result)}
-            <Row word="{result.word}" colors="{result.colors}"/>
-        {/each}
-
-        {#if !win}
-            <Row word="{wordToCheck}" shake="{wrongWord}"/>
-            {#if checkingWord}
-                <div>
-                    <img alt="checking..." class="checking" src="./images/checking.gif">
-                </div>
-            {/if}
-        {:else}
-            <div class="meaning">
-                Lookup <a href="https://en.wikipedia.org/w/index.php?search={wordToCheck}">
-                <span class="word">{wordToCheck}</span></a>
-                in Wikipedia.
-            </div>
-            <div class="twitter">
-                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <a href="https://twitter.com/intent/tweet?screen_name=MariaDB"
-                   class="twitter-mention-button"
-                   data-size="large"
-                   data-text="#Wordle: {topic.name} {resultsShare}"
-                   data-show-count="false">
-                </a>
-            </div>
-            <div class="footer">
-                Powered by <a href="https://mariadb.com/">MariaDB</a>.
-                Browse the <a href="https://github.com/mariadb-developers">source code</a>.
-            </div>
-        {/if}
-    </div>
-    <div class="keyboard-wrapper">
-        <div class="simple-keyboard"></div>
-    </div>
-</main>
-
 <style>
     main {
         display: flex;
@@ -183,10 +132,12 @@
     .board {
         flex-grow: 1;
         margin-bottom: 1em;
+        text-align: center;
     }
 
     .checking {
         width: 100px;
+        opacity: 0.5;
     }
 
     .meaning {
@@ -214,3 +165,46 @@
         margin: 0 auto;
     }
 </style>
+
+<main>
+    {#if topic.name === undefined}
+        <p>Connecting to SkySQL...</p>
+    {:else }
+        <h1>
+            {topic.name}
+        </h1>
+    {/if}
+    <div class="board">
+        {#each results as result (result)}
+            <Row word="{result.word}" colors="{result.colors}"/>
+        {/each}
+
+        {#if !win}
+            <Row word="{wordToCheck}" shake="{wrongWord}"/>
+        {:else}
+            <div class="meaning">
+                Lookup <a href="https://en.wikipedia.org/w/index.php?search={wordToCheck}">
+                <span class="word">{wordToCheck}</span></a>
+                in Wikipedia.
+            </div>
+            <div class="twitter">
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <a href="https://twitter.com/intent/tweet?screen_name=MariaDB"
+                   class="twitter-mention-button"
+                   data-size="large"
+                   data-text="#Wordle: {topic.name} {resultsShare}"
+                   data-show-count="false">
+                </a>
+            </div>
+            <div class="footer">
+                Powered by <a href="https://mariadb.com/">MariaDB</a>.
+                Browse the <a href="https://github.com/mariadb-developers">source code</a>.
+            </div>
+        {/if}
+    </div>
+    {#if !win}
+        <div class="keyboard-wrapper">
+            <div class="simple-keyboard"></div>
+        </div>
+    {/if}
+</main>

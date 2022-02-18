@@ -10,7 +10,7 @@
 
 <div class="row {shake ? 'shake' : ''}" in:slide>
     {#each word as letter, i}
-        <Square letter="{letter}" color="{colors.charAt(i) || 'transparent'}"/>
+        <Square letter="{letter}" color="{colors.charAt(i)}"/>
     {/each}
 </div>
 

@@ -1,10 +1,11 @@
 <script>
     import {scale} from "svelte/transition";
+
     export let letter = '';
     export let color = '';
 </script>
 
-<div class="square color-{color}" in:scale>
+<div class="square color-{color || 't'}" in:scale>
     {letter}
 </div>
 
@@ -20,7 +21,7 @@
         border: 1px solid white;
     }
 
-    .color-transparent {
+    .color-t {
         border: 1px solid #ccc;
     }
 

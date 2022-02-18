@@ -18,8 +18,6 @@
     .row {
         display: flex;
         flex-direction: row;
-        margin: 0 auto;
-        text-align: center;
     }
 
     .shake {

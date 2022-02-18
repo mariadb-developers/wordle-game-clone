@@ -10,6 +10,7 @@
 
 <style>
     .square {
+        text-align: center;
         width: 1.8em;
         height: 1.8em;
         line-height: 1.8em;

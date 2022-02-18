@@ -1,6 +1,8 @@
 <script>
     import {onMount} from "svelte";
     import Row from './Row.svelte';
+    import Keyboard from "simple-keyboard";
+    import "simple-keyboard/build/css/index.css";
 
     let backend = "";
     let topics = [];
@@ -33,6 +35,7 @@
                     .then(data => topics = data)
                     .then(() => topic = topics.find(t => t.id === topicId))
                     .then(() => fillWithSpaces())
+                    .then(() => screenKeyboardSetup())
             );
     });
 
@@ -61,8 +64,8 @@
             } else {
                 wordToCheck = '';
                 fillWithSpaces();
+                setTimeout(() => window.scrollTo(0,document.body.scrollHeight), 355);
             }
-            window.scrollTo(0, document.body.scrollHeight + 900);
         } else {
             wrongWord = true;
         }
@@ -74,24 +77,41 @@
         }
     }
 
+    function screenKeyboardSetup() {
+        new Keyboard({
+            onKeyPress: key => handleKey(key),
+            layout: {
+                'default': [
+                    'Q W E R T Y U I O P',
+                    'A S D F G H J K L',
+                    '✓ Z X C V B N M ❮'
+                ]
+            }
+        });
+    }
+
+    function handleKey(key) {
+        if (key === 'Enter' || key === '✓') {
+            if (wordToCheck.trim().length === length) {
+                checkWord();
+            }
+        } else if (key === 'Backspace' || key === '❮') {
+            if (wordToCheck.length > 0) {
+                wordToCheck = wordToCheck.trim().slice(0, -1);
+            }
+        } else if (key.length === 1 && wordToCheck.trim().length < length) {
+            wordToCheck = wordToCheck.trim() + key;
+        }
+        fillWithSpaces();
+    }
+
     function handleKeydown(event) {
         if (checkingWord || event.altKey || event.ctrlKey || event.metaKey
             || event.key === "Meta" || event.key === "Control"
             || event.key === "alt") {
             return;
         }
-
-        let key = event.keyCode || event.charCode;
-        if (key === 13 && wordToCheck.trim().length === length) { // enter
-            checkWord();
-        } else if (key === 8) { // backspace
-            if (wordToCheck.length > 0) {
-                wordToCheck = wordToCheck.trim().slice(0, -1);
-            }
-        } else if (event.key.length === 1 && wordToCheck.trim().length < length) {
-            wordToCheck = wordToCheck.trim() + event.key;
-        }
-        fillWithSpaces();
+        handleKey(event.key);
     }
 </script>
 
@@ -105,10 +125,11 @@
             {topic.name}
         {/if}
     </h1>
-    <div class="centered">
+    <div class="board">
         {#each results as result (result)}
             <Row word="{result.word}" colors="{result.colors}"/>
         {/each}
+
         {#if !win}
             <Row word="{wordToCheck}" shake="{wrongWord}"/>
             {#if checkingWord}
@@ -137,11 +158,17 @@
             </div>
         {/if}
     </div>
+    <div class="keyboard-wrapper">
+        <div class="simple-keyboard"></div>
+    </div>
 </main>
 
 <style>
     main {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
     }
 
     @media (min-width: 640px) {
@@ -150,10 +177,9 @@
         }
     }
 
-    .centered {
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 3em;
+    .board {
+        flex-grow: 1;
+        margin-bottom: 1em;
     }
 
     .checking {
@@ -177,5 +203,11 @@
     .footer {
         margin-top: 1.5em;
         font-size: small;
+    }
+
+    .keyboard-wrapper {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
     }
 </style>

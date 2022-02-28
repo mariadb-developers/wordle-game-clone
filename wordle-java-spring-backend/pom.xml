@@ -41,6 +41,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

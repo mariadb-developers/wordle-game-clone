@@ -5,7 +5,7 @@
     import "simple-keyboard/build/css/index.css";
     import "./app.css";
 
-    let backend = "";
+    let backendUrl = "";
     let topic = {};
     let length = 5;
     let wordToCheck = '';
@@ -16,24 +16,20 @@
     let wrongWord = false;
 
     onMount(() => {
-        fetchBackendUrl(".backend");
+        fetchBackendUrl("backend.json");
     });
 
     function fetchBackendUrl(backendFetchUrl) {
         fetch(backendFetchUrl)
             .then(response => {
-                if(!response.ok) {
-                    throw new Error(backendFetchUrl + " not found.");
+                if (!response.ok) {
+                    console.log("Using default backend URL");
+                    return {"url": "http://localhost:9090/api/v1"};
                 }
-                return response.text();
+                return response.json();
             })
-            .then(url => backend = url)
-            .then(() => fetchTopic())
-            .catch(() => {
-                console.log("Using default backend URL");
-                backend = "http://localhost:9090/api/v1";
-                fetchTopic();
-            });
+            .then(backend => backendUrl = backend.url)
+            .then(() => fetchTopic());
     }
 
     function fetchTopic() {
@@ -47,7 +43,7 @@
             topicId = parseInt(urlParams.get('topic'));
         }
 
-        fetch(`${backend}/topics`)
+        fetch(`${backendUrl}/topics`)
             .then(response => response.json())
             .then(topics => topic = topics.find(t => t.id === topicId))
             .then(() => fillWithSpaces())
@@ -57,7 +53,7 @@
     function checkWord() {
         checkingWord = true;
         wrongWord = false;
-        fetch(`${backend}/${topic.id}/${length}/${wordToCheck}/check`)
+        fetch(`${backendUrl}/${topic.id}/${length}/${wordToCheck}/check`)
             .then(response => response.text())
             .then(data => addResult(data))
             .then(() => checkingWord = false)

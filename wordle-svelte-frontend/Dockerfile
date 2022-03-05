@@ -5,5 +5,5 @@ RUN npm run build
 
 FROM httpd:2.4.52-alpine
 COPY --from=build /src/public /usr/local/apache2/htdocs
-CMD echo $BACKEND_URL > /usr/local/apache2/htdocs/backend.url\
+CMD echo $BACKEND_URL > /usr/local/apache2/htdocs/backend.json\
     && httpd-foreground

@@ -15,6 +15,10 @@
     let wrongWord = false;
 
     onMount(() => {
+        connectBackend();
+    });
+
+    function connectBackend() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("length")) {
             length = parseInt(urlParams.get('length'));
@@ -34,19 +38,25 @@
                     .then(topics => topic = topics.find(t => t.id === topicId))
                     .then(() => fillWithSpaces())
                     .then(() => screenKeyboardSetup())
-            );
-    });
+            )
+            .catch(error => {
+                setTimeout(() => connectBackend(), 5000);
+            });
+    }
 
-    const checkWord = () => {
+    function checkWord() {
         checkingWord = true;
         wrongWord = false;
         fetch(`${backend}/${topic.id}/${length}/${wordToCheck}/check`)
             .then(response => response.text())
             .then(data => addResult(data))
-            .then(() => checkingWord = false);
+            .then(() => checkingWord = false)
+            .catch(error => {
+                setTimeout(() => checkWord(), 5000);
+            });
     };
 
-    const addResult = resultString => {
+    function addResult(resultString) {
         if (resultString) {
             results = [...results, {colors: resultString, word: wordToCheck}];
             let correctLettersCount = resultString.split("2").length - 1;
@@ -69,7 +79,7 @@
         }
     };
 
-    const fillWithSpaces = () => {
+    function fillWithSpaces() {
         for (let i = wordToCheck.length; i < length; i++) {
             wordToCheck += ' ';
         }
@@ -135,11 +145,6 @@
         text-align: center;
     }
 
-    .checking {
-        width: 100px;
-        opacity: 0.5;
-    }
-
     .meaning {
         font-size: small;
         margin-top: 1.5em;
@@ -173,38 +178,38 @@
         <h1>
             {topic.name}
         </h1>
-    {/if}
-    <div class="board">
-        {#each results as result (result)}
-            <Row word="{result.word}" colors="{result.colors}"/>
-        {/each}
+        <div class="board">
+            {#each results as result (result)}
+                <Row word="{result.word}" colors="{result.colors}"/>
+            {/each}
 
+            {#if !win}
+                <Row word="{wordToCheck}" shake="{wrongWord}"/>
+            {:else}
+                <div class="meaning">
+                    Lookup <a href="https://en.wikipedia.org/w/index.php?search={wordToCheck}">
+                    <span class="word">{wordToCheck}</span></a>
+                    in Wikipedia.
+                </div>
+                <div class="twitter">
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    <a href="https://twitter.com/intent/tweet?screen_name=MariaDB"
+                       class="twitter-mention-button"
+                       data-size="large"
+                       data-text="#Wordle: {topic.name} {resultsShare}"
+                       data-show-count="false">
+                    </a>
+                </div>
+                <div class="footer">
+                    Powered by <a href="https://mariadb.com/">MariaDB</a>.
+                    Browse the <a href="https://github.com/mariadb-developers">source code</a>.
+                </div>
+            {/if}
+        </div>
         {#if !win}
-            <Row word="{wordToCheck}" shake="{wrongWord}"/>
-        {:else}
-            <div class="meaning">
-                Lookup <a href="https://en.wikipedia.org/w/index.php?search={wordToCheck}">
-                <span class="word">{wordToCheck}</span></a>
-                in Wikipedia.
-            </div>
-            <div class="twitter">
-                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <a href="https://twitter.com/intent/tweet?screen_name=MariaDB"
-                   class="twitter-mention-button"
-                   data-size="large"
-                   data-text="#Wordle: {topic.name} {resultsShare}"
-                   data-show-count="false">
-                </a>
-            </div>
-            <div class="footer">
-                Powered by <a href="https://mariadb.com/">MariaDB</a>.
-                Browse the <a href="https://github.com/mariadb-developers">source code</a>.
+            <div class="keyboard-wrapper">
+                <div class="simple-keyboard"></div>
             </div>
         {/if}
-    </div>
-    {#if !win}
-        <div class="keyboard-wrapper">
-            <div class="simple-keyboard"></div>
-        </div>
     {/if}
 </main>

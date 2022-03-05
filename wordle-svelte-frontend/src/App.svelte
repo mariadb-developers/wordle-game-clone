@@ -3,6 +3,7 @@
     import Row from './Row.svelte';
     import Keyboard from "simple-keyboard";
     import "simple-keyboard/build/css/index.css";
+    import "./app.css";
 
     let backend = "";
     let topic = {};
@@ -124,52 +125,6 @@
 </script>
 
 <svelte:window on:keydown={handleKeydown}/>
-
-<style>
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 100%;
-    }
-
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
-    }
-
-    .board {
-        flex-grow: 1;
-        margin-bottom: 1em;
-        text-align: center;
-    }
-
-    .meaning {
-        font-size: small;
-        margin-top: 1.5em;
-    }
-
-    .word {
-        font-style: italic;
-        text-transform: uppercase;
-    }
-
-    .twitter {
-        margin-top: 1.5em;
-    }
-
-    .footer {
-        margin-top: 1.5em;
-        font-size: small;
-    }
-
-    .keyboard-wrapper {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-</style>
 
 <main>
     {#if topic.name === undefined}

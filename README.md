@@ -98,3 +98,19 @@ LOAD DATA LOCAL INFILE '/path/to/words_pos.csv'
 Go to http://localhost:8080/?topic=2.
 
 You can also specify the length of the word: http://localhost:8080/?topic=2&length=4.
+
+## Support and Contribution
+
+Please feel free to submit PR's, issues or requests to this project
+directly.
+
+If you have any other questions, comments, or looking for more information
+on MariaDB please check out:
+
+* [MariaDB Developer Hub](https://mariadb.com/developers)
+* [MariaDB Community Slack](https://r.mariadb.com/join-community-slack)
+
+Or reach out to us directly via:
+
+* [developers@mariadb.com](mailto:developers@mariadb.com)
+* [MariaDB Twitter](https://twitter.com/mariadb)

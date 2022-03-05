@@ -168,7 +168,7 @@
 
 <main>
     {#if topic.name === undefined}
-        <p>Connecting to SkySQL...</p>
+        <p>Connecting to the backend...</p>
     {:else }
         <h1>
             {topic.name}

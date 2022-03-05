@@ -12,4 +12,5 @@
 ### VS Code ###
 .vscode/
 
+public/.backend
 .vercel

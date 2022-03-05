@@ -16,7 +16,7 @@
     let wrongWord = false;
 
     onMount(() => {
-        fetchBackendUrl("backend.url");
+        fetchBackendUrl(".backend");
     });
 
     function fetchBackendUrl(backendFetchUrl) {

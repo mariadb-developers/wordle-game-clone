@@ -1,4 +1,5 @@
 # A Wordle game clone
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=plastic)](https://opensource.org/licenses/MIT)
 
 A [Wordle](https://en.wikipedia.org/wiki/Wordle) clone implemented with [Spring Boot](https://spring.io/projects/spring-boot), [R2DBC](https://r2dbc.io/), [MariaDB](https://mariadb.com/), and [Svelte](https://svelte.dev/).
 

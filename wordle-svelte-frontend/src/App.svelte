@@ -16,10 +16,27 @@
     let wrongWord = false;
 
     onMount(() => {
-        connectBackend();
+        fetchBackendUrl("backend.url");
     });
 
-    function connectBackend() {
+    function fetchBackendUrl(backendFetchUrl) {
+        fetch(backendFetchUrl)
+            .then(response => {
+                if(!response.ok) {
+                    throw new Error(backendFetchUrl + " not found.");
+                }
+                return response.text();
+            })
+            .then(url => backend = url)
+            .then(() => fetchTopic())
+            .catch(() => {
+                console.log("Using default backend URL");
+                backend = "http://localhost:9090/api/v1";
+                fetchTopic();
+            });
+    }
+
+    function fetchTopic() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("length")) {
             length = parseInt(urlParams.get('length'));
@@ -30,19 +47,11 @@
             topicId = parseInt(urlParams.get('topic'));
         }
 
-        fetch("/backend.url")
-            .then(response => response.text())
-            .then(url => backend = url)
-            .then(() =>
-                fetch(`${backend}/topics`)
-                    .then(response => response.json())
-                    .then(topics => topic = topics.find(t => t.id === topicId))
-                    .then(() => fillWithSpaces())
-                    .then(() => screenKeyboardSetup())
-            )
-            .catch(error => {
-                setTimeout(() => connectBackend(), 5000);
-            });
+        fetch(`${backend}/topics`)
+            .then(response => response.json())
+            .then(topics => topic = topics.find(t => t.id === topicId))
+            .then(() => fillWithSpaces())
+            .then(() => screenKeyboardSetup())
     }
 
     function checkWord() {
@@ -52,7 +61,7 @@
             .then(response => response.text())
             .then(data => addResult(data))
             .then(() => checkingWord = false)
-            .catch(error => {
+            .catch(() => {
                 setTimeout(() => checkWord(), 5000);
             });
     };

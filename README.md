@@ -11,9 +11,9 @@ A [Wordle](https://en.wikipedia.org/wiki/Wordle) clone implemented with [Spring 
   in the **pom.xml** file).
 - [Apache Maven](https://maven.apache.org).
 - [Node.js](https://nodejs.org)
-- MariaDB server. If you don't want to install
-  anything extra, try creating a
+- MariaDB server. If you don't want to install anything extra, try creating a
   [free SkySQL account](https://mariadb.com/products/skysql)).
+  [Docker](https://hub.docker.com/u/mariadb) is also a good option.
 - An SQL client tool like `mariadb`, DBeaver, or an SQL integration for
   your IDE.
 

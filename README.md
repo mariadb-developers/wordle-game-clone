@@ -88,8 +88,7 @@ INSERT INTO topic(name) VALUES ('370k English words corpus');
 
 LOAD DATA LOCAL INFILE '/path/to/words_pos.csv'
     IGNORE INTO TABLE word
-    FIELDS
-    TERMINATED BY ','
+    FIELDS TERMINATED BY ','
     LINES TERMINATED BY '\n'
     IGNORE 0 LINES
     (@dummy, text) SET topic_id = 2, text = UPPER(text);
